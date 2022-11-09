@@ -5,21 +5,17 @@ import android.hardware.display.DisplayManager
 import android.media.MediaRouter
 import android.view.Display
 
-val Context.presentationDisplay:Display?
+val Context.presentationDisplay: Display
     get() = obtainPresentationDisplay1(this)
 
-fun obtainPresentationDisplay1(ctx:Context):Display?{
+fun obtainPresentationDisplay1(ctx: Context): Display {
     val displayManager = ctx.getSystemService(DisplayManager::class.java)
     val displays = displayManager.getDisplays(DisplayManager.DISPLAY_CATEGORY_PRESENTATION)
-    return if (displays.isNotEmpty()) {
-        displays[0]
-    } else {
-        null
-    }
+    return displays[0]
 }
 
-fun obtainPresentationDisplay2(ctx:Context):Display?{
+fun obtainPresentationDisplay2(ctx: Context): Display {
     val mediaRouter = ctx.getSystemService(MediaRouter::class.java)
     val routeInfo = mediaRouter.getSelectedRoute(MediaRouter.ROUTE_TYPE_LIVE_VIDEO)
-    return routeInfo?.presentationDisplay
+    return routeInfo.presentationDisplay
 }

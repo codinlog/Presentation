@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Presentation</string>
+    <string name="base_of_presentation">
+        "A presentation is a special kind of dialog whose
+        purpose is to present content on a secondary display. A Presentation is associated with the target Display at creation time and configures its context and resource configuration according to the display's metrics.
+        Notably, the Context of a presentation is different from the context of its containing Activity. It is important to inflate the layout of a presentation and load other resources using the presentation's own context to ensure that assets of the correct size and density for the target display are loaded.
+        A presentation is automatically canceled (see Dialog#cancel()) when the display to which it is
+        attached is removed. An activity should take care of pausing and resuming whatever content is playing within the presentation whenever the activity itself is paused or resumed."
+    </string>
+
+    <string name="first_screen">First Screen</string>
+    <string name="second_screen">Second Screen</string>
 </resources>

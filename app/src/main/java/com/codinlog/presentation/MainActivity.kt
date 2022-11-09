@@ -1,8 +1,10 @@
 package com.codinlog.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,34 +15,41 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import com.codinlog.presentation.core.ApplicationViewModelStoreProvider
+import com.codinlog.presentation.service.PresentationService
 import com.codinlog.presentation.ui.theme.PresentationTheme
 
 class MainActivity : ComponentActivity() {
+    private val mServiceIntent by lazy {
+        Intent(this, PresentationService::class.java)
+    }
+
+    private lateinit var mAppViewModel: ApplicationViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mAppViewModel = ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
 
         val data = buildList {
-            add(HomeData("Service + Compose",fun(){
-                
+            add(HomeData("Start Service", fun() {
+                startService(mServiceIntent)
             }))
-            
-            add(HomeData("Service + ViewPager2",fun(){
-                
+
+            add(HomeData("Stop Service", fun() {
+                stopService(mServiceIntent)
             }))
-            
-            add(HomeData("Service + RemoteView",fun(){
-                
+
+            add(HomeData("Show", fun() {
+                mAppViewModel.setPresentationDialogState(PresentationDialogState.ServiceShowState)
             }))
-            
-            add(HomeData("Service + FrameLayout",fun(){
-                
+
+            add(HomeData("Hide", fun() {
+                mAppViewModel.setPresentationDialogState(PresentationDialogState.ServiceHideState)
             }))
-            
-            add(HomeData("Activity + Fragment",fun(){
-                
-            }))
+
         }
 
         setContent {
@@ -55,13 +64,14 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun getViewModelStore(): ViewModelStore = ApplicationViewModelStoreProvider
 }
 
-
-data class HomeData(val text:String,val onClick:()->Unit)
+data class HomeData(val text: String, val onClick: () -> Unit)
 
 @Composable
-fun Home(data:List<HomeData>){
+fun Home(data: List<HomeData>) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceAround,
