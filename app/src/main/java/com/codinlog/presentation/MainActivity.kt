@@ -1,7 +1,12 @@
 package com.codinlog.presentation
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -18,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import com.codinlog.presentation.core.ApplicationViewModelStoreProvider
+import com.codinlog.presentation.screen.AnimScreen
 import com.codinlog.presentation.service.PresentationService
 import com.codinlog.presentation.ui.theme.PresentationTheme
 
@@ -26,16 +32,35 @@ class MainActivity : ComponentActivity() {
         Intent(this, PresentationService::class.java)
     }
 
+    private var mPresentationBinder: IPresentationAidlInterface? = null
+
+    private val mServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            mPresentationBinder = IPresentationAidlInterface.Stub.asInterface(service)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            mPresentationBinder = null
+        }
+
+    }
+
+    private lateinit var mAnimScreen: AnimScreen
+
     private lateinit var mAppViewModel: ApplicationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mAppViewModel = ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
+        mAnimScreen = AnimScreen(this)
+
+        mAppViewModel =
+            ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
 
         val data = buildList {
             add(HomeData("Start Service", fun() {
                 startService(mServiceIntent)
+                bindService()
             }))
 
             add(HomeData("Stop Service", fun() {
@@ -50,6 +75,18 @@ class MainActivity : ComponentActivity() {
                 mAppViewModel.setPresentationDialogState(PresentationDialogState.ServiceHideState)
             }))
 
+            add(HomeData("Anim", fun() {
+                mPresentationBinder?.setRemoteView(mAnimScreen.apply {
+                    startAnim()
+                    setOnViewUpdateListener {
+                        mPresentationBinder?.setRemoteView(it)
+                    }
+                }) ?: Toast.makeText(
+                    this@MainActivity,
+                    "Service Not Connect",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }))
         }
 
         setContent {
@@ -65,7 +102,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+
     override fun getViewModelStore(): ViewModelStore = ApplicationViewModelStoreProvider
+
+    private fun bindService() {
+        bindService(mServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
+    }
 }
 
 data class HomeData(val text: String, val onClick: () -> Unit)

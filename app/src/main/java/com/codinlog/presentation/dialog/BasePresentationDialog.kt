@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Display
 import android.view.View
 import android.widget.RemoteViews
+import androidx.core.view.children
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
@@ -29,7 +30,7 @@ open class BasePresentationDialog(context: Context, display: Display) :
 
     private var mOnShowListener: OnShowListener? = null
     private var mOnDismissListener: OnDismissListener? = null
-    private lateinit var mBaseContainer: BaseScreenContainer
+    private val mBaseContainer: BaseScreenContainer = object : BaseScreenContainer(context) {}
 
     val container: BaseScreenContainer
         get() = mBaseContainer
@@ -48,10 +49,7 @@ open class BasePresentationDialog(context: Context, display: Display) :
             mOnDismissListener?.onDismiss(this)
             onInvisible()
         }
-
-        mBaseContainer = BaseScreenContainer(context).apply {
-            ViewTreeViewModelStoreOwner.set(this, this@BasePresentationDialog)
-        }
+        ViewTreeViewModelStoreOwner.set(mBaseContainer, this@BasePresentationDialog)
         super.setContentView(mBaseContainer)
     }
 

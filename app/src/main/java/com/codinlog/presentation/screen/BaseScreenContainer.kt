@@ -18,14 +18,7 @@ abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
 
     init {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-
-        setContentView(onCreateView())
-        onViewCreated()
     }
-
-    abstract fun onCreateView():View
-
-    open fun onViewCreated() {}
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -37,7 +30,13 @@ abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
         onInvisible()
     }
 
-    private fun setContentView(view: View) {
-        addView(view)
+    override fun onVisible() {
+
     }
+
+    override fun onInvisible() {
+
+    }
+
+
 }

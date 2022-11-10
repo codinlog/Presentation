@@ -17,11 +17,20 @@ import kotlinx.coroutines.launch
 abstract class PresentationScreen(context: Context, private val parent: BaseScreenContainer) :
     BaseScreenContainer(context) {
 
-    override fun onCreateView(): View {
-        return onCreateView(parent)
+    init {
+        val view = onCreateView(parent)
+        setContentView(view)
+        onViewCreated()
     }
 
     abstract fun onCreateView(parent: BaseScreenContainer): View
+
+    open fun onViewCreated(){}
+
+    private fun setContentView(view: View?) {
+        if (view == null) return
+        addView(view)
+    }
 }
 
 val PresentationScreen.scope: CoroutineScope
