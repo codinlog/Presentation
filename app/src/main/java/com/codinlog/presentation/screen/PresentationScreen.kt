@@ -3,7 +3,6 @@ package com.codinlog.presentation.screen
 import android.content.Context
 import android.view.View
 import android.view.View.OnAttachStateChangeListener
-import com.codinlog.presentation.core.IVisibleStateChangedListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -15,35 +14,14 @@ import kotlinx.coroutines.launch
  * @author kouqurong / codinlog@foxmail.com
  * @date 2022/11/9
  */
-abstract class PresentationScreen(context: Context, parent: BaseScreenContainer) :
-    BaseScreenContainer(context), IVisibleStateChangedListener {
+abstract class PresentationScreen(context: Context, private val parent: BaseScreenContainer) :
+    BaseScreenContainer(context) {
 
-    init {
-        setContentView(onCreateView(parent))
-        onViewCreated()
+    override fun onCreateView(): View {
+        return onCreateView(parent)
     }
 
     abstract fun onCreateView(parent: BaseScreenContainer): View
-
-    open fun onViewCreated() {}
-
-    override fun onVisible() {}
-
-    override fun onInvisible() {}
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        onVisible()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        onInvisible()
-    }
-
-    private fun setContentView(view: View) {
-        addView(view)
-    }
 }
 
 val PresentationScreen.scope: CoroutineScope
