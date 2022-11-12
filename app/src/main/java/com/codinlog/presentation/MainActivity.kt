@@ -6,10 +6,8 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 import com.codinlog.presentation.core.ApplicationViewModelStoreProvider
-import com.codinlog.presentation.screen.AnimScreen
 import com.codinlog.presentation.service.PresentationService
 import com.codinlog.presentation.ui.theme.PresentationTheme
 
@@ -45,14 +42,10 @@ class MainActivity : ComponentActivity() {
 
     }
 
-    private lateinit var mAnimScreen: AnimScreen
-
     private lateinit var mAppViewModel: ApplicationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mAnimScreen = AnimScreen(this)
 
         mAppViewModel =
             ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
@@ -76,16 +69,17 @@ class MainActivity : ComponentActivity() {
             }))
 
             add(HomeData("Anim", fun() {
-                mPresentationBinder?.setRemoteView(mAnimScreen.apply {
-                    startAnim()
-                    setOnViewUpdateListener {
-                        mPresentationBinder?.setRemoteView(it)
-                    }
-                }) ?: Toast.makeText(
-                    this@MainActivity,
-                    "Service Not Connect",
-                    Toast.LENGTH_SHORT
-                ).show()
+               mAppViewModel.setPresentationScreenState(PresentationScreenRoute.AnimScreen)
+            }))
+
+            add(HomeData("First", fun() {
+                mAppViewModel.setPresentationScreenState(PresentationScreenRoute.FirstScreen)
+            }))
+            add(HomeData("Second", fun() {
+                mAppViewModel.setPresentationScreenState(PresentationScreenRoute.SecondScreen)
+            }))
+            add(HomeData("Keyboard", fun() {
+                startActivity(Intent(this@MainActivity, KeyboardActivity::class.java))
             }))
         }
 

@@ -9,6 +9,8 @@ import com.codinlog.presentation.ApplicationViewModel
 import com.codinlog.presentation.ApplicationViewModelFactory
 import com.codinlog.presentation.PresentationScreenRoute
 import com.codinlog.presentation.databinding.LayoutSecondScreenBinding
+import com.codinlog.presentation.screen.core.BaseScreenContainer
+import com.codinlog.presentation.screen.core.PresentationKeyboardScreen
 
 /**
  * @description TODO
@@ -21,17 +23,20 @@ data class SecondScreenData(val text: String)
 
 @SuppressLint("ViewConstructor")
 class SecondScreen(context: Context, parent: BaseScreenContainer) :
-    PresentationScreen(context, parent) {
+    PresentationKeyboardScreen(context, parent) {
     lateinit var mBinding: LayoutSecondScreenBinding
     lateinit var mViewModel: ApplicationViewModel
 
     override fun onCreateView(parent: BaseScreenContainer): View {
         mBinding = LayoutSecondScreenBinding.inflate(layoutInflater, parent, false)
 
-        val viewModelStoreOwner =parent.findViewTreeViewModelStoreOwner()
+        val viewModelStoreOwner = parent.findViewTreeViewModelStoreOwner()
             ?: throw IllegalStateException("viewModelStoreOwner is null")
 
-        mViewModel = ViewModelProvider(viewModelStoreOwner, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
+        mViewModel = ViewModelProvider(
+            viewModelStoreOwner,
+            ApplicationViewModelFactory()
+        )[ApplicationViewModel::class.java]
 
         return mBinding.root
     }
@@ -41,6 +46,13 @@ class SecondScreen(context: Context, parent: BaseScreenContainer) :
         mBinding.btn.setOnClickListener {
             mViewModel.setPresentationScreenState(PresentationScreenRoute.FirstScreen)
         }
+
+        mBinding.et.setOnTouchListener { _, _ ->
+            showKeyboard(mBinding.et)
+            true
+        }
+
+        showKeyboard(mBinding.et)
     }
 
 }

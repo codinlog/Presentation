@@ -1,10 +1,11 @@
-package com.codinlog.presentation.dialog
+package com.codinlog.presentation.dialog.core
 
 import android.app.Presentation
 import android.content.Context
 import android.content.DialogInterface.OnDismissListener
 import android.content.DialogInterface.OnShowListener
 import android.os.Bundle
+import android.util.Log
 import android.view.Display
 import android.view.View
 import android.widget.RemoteViews
@@ -12,9 +13,9 @@ import androidx.core.view.children
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
-import com.codinlog.presentation.core.IVisibleStateChangedListener
 import com.codinlog.presentation.core.ApplicationViewModelStoreProvider
-import com.codinlog.presentation.screen.BaseScreenContainer
+import com.codinlog.presentation.core.IVisibleStateChangedListener
+import com.codinlog.presentation.screen.core.BaseScreenContainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -24,6 +25,8 @@ import kotlinx.coroutines.launch
  * @param context 可以使用application、activity、service
  * 如果是application、service，需要在manifest中注册权限 android.permission.SYSTEM_ALERT_WINDOW
  */
+
+private const val TAG = "BasePresentationDialog"
 
 open class BasePresentationDialog(context: Context, display: Display) :
     Presentation(context, display), IVisibleStateChangedListener, ViewModelStoreOwner {

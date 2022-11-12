@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <com.codinlog.presentation.view.PresentationKeyboardView
+        android:id="@+id/kv_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyBackground="@drawable/keyboard_key_background"
+        android:keyTextColor="@color/white"
+        android:keyTextSize="18sp"
+        android:labelTextSize="18sp"
+        android:paddingTop="1dp" />
+</layout>

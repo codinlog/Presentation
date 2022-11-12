@@ -1,14 +1,19 @@
-package com.codinlog.presentation
+package com.codinlog.presentation.dialog
 
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.Display
 import androidx.lifecycle.ViewModelProvider
-import com.codinlog.presentation.dialog.BasePresentationDialog
-import com.codinlog.presentation.dialog.collectionOnVisible
+import com.codinlog.presentation.ApplicationViewModel
+import com.codinlog.presentation.ApplicationViewModelFactory
+import com.codinlog.presentation.PresentationScreenRoute
+import com.codinlog.presentation.dialog.core.BasePresentationDialog
+import com.codinlog.presentation.dialog.core.collectionOnVisible
+import com.codinlog.presentation.screen.AnimScreen
 import com.codinlog.presentation.screen.FirstScreen
 import com.codinlog.presentation.screen.SecondScreen
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 /**
  * @description TODO
@@ -25,24 +30,31 @@ class PresentationDialog(context: Context, display: Display) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mAppViewModel = ViewModelProvider(this,ApplicationViewModelFactory())[ApplicationViewModel::class.java]
+        mAppViewModel =
+            ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
 
 
         collectionOnVisible {
-            mAppViewModel.presentationScreenFlow.collect {
+            mAppViewModel.presentationScreenFlow
+                .distinctUntilChanged()
+                .collect {
                 showPresentationScreen(it)
             }
         }
     }
 
     private fun showPresentationScreen(state: PresentationScreenRoute) {
-        Log.d(TAG,state.toString())
+        Log.d(TAG, state.toString())
         when (state) {
             is PresentationScreenRoute.FirstScreen -> {
                 setContentView(FirstScreen(context, container))
             }
             is PresentationScreenRoute.SecondScreen -> {
                 setContentView(SecondScreen(context, container))
+            }
+
+            is PresentationScreenRoute.AnimScreen -> {
+                setContentView(AnimScreen(context, container))
             }
             is PresentationScreenRoute.RemoteScreen -> {
                 setRemoteViews(state.view)

@@ -29,8 +29,8 @@ object ApplicationProvider {
 
     val application: Application
         @SuppressLint("DiscouragedPrivateApi", "PrivateApi")
-        get(){
-            if(::mApplication.isInitialized) return mApplication
+        get() {
+            if (::mApplication.isInitialized) return mApplication
             try {
                 mApplication = Class.forName("android.app.ActivityThread")
                     .getDeclaredMethod("currentApplication").invoke(null) as Application
@@ -40,7 +40,7 @@ object ApplicationProvider {
             } catch (ignored: ClassNotFoundException) {
             } catch (ignored: ClassCastException) {
             }
-           return mApplication
+            return mApplication
         }
 
     fun setup(application: Application) {

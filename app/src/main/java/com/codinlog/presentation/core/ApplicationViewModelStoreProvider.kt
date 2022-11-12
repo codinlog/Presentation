@@ -1,7 +1,6 @@
 package com.codinlog.presentation.core
 
 import android.app.Application
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStore
 
 /**
@@ -25,6 +24,6 @@ class ApplicationViewModelStoreDelegate : IApplicationViewModelStoreDelegate {
 }
 
 
-object ApplicationViewModelStoreProvider:ViewModelStore() {
-    fun setup(application: Application){}
+object ApplicationViewModelStoreProvider : ViewModelStore() {
+    fun setup(application: Application) {}
 }

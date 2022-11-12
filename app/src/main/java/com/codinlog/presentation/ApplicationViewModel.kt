@@ -21,6 +21,7 @@ import javax.inject.Inject
 sealed interface PresentationScreenRoute {
     object FirstScreen : PresentationScreenRoute
     object SecondScreen : PresentationScreenRoute
+    object AnimScreen : PresentationScreenRoute
     class RemoteScreen(val view: RemoteViews) : PresentationScreenRoute
 }
 
@@ -74,8 +75,9 @@ class ApplicationViewModel @Inject constructor(application: Application) :
 }
 
 
-class ApplicationViewModelFactory: ViewModelProvider.Factory {
+class ApplicationViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(Application::class.java).newInstance(ApplicationProvider.application)
+        return modelClass.getConstructor(Application::class.java)
+            .newInstance(ApplicationProvider.application)
     }
 }

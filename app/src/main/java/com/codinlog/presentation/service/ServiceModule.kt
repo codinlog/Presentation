@@ -3,7 +3,7 @@ package com.codinlog.presentation.service
 import android.app.Service
 import android.content.Context
 import android.view.Display
-import com.codinlog.presentation.PresentationDialog
+import com.codinlog.presentation.dialog.PresentationDialog
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,7 +22,7 @@ annotation class ServiceContextQualifier
 
 @Module
 @InstallIn(ServiceComponent::class)
-object ServiceProvide{
+object ServiceProvide {
     @Provides
     fun provideServiceContextDialog(
         @ServiceContextQualifier context: Context,
@@ -32,7 +32,7 @@ object ServiceProvide{
 
 @Module
 @InstallIn(ServiceComponent::class)
-abstract class ServiceBinds{
+abstract class ServiceBinds {
     @Binds
     @ServiceContextQualifier
     abstract fun bindPresentationServiceContext(service: Service): Context

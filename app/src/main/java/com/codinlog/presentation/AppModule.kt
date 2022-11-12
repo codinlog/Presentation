@@ -2,15 +2,12 @@ package com.codinlog.presentation
 
 import android.content.Context
 import android.view.Display
-import com.codinlog.presentation.service.PresentationService
 import com.codinlog.presentation.util.presentationDisplay
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Qualifier
 
 /**
  * @description TODO
@@ -23,5 +20,6 @@ import javax.inject.Qualifier
 @InstallIn(SingletonComponent::class)
 object AppProvide {
     @Provides
-    fun providePresentationDisplay(@ApplicationContext context: Context): Display = context.presentationDisplay
+    fun providePresentationDisplay(@ApplicationContext context: Context): Display =
+        context.presentationDisplay
 }

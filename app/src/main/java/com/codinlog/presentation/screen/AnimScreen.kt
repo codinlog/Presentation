@@ -1,12 +1,13 @@
 package com.codinlog.presentation.screen
 
 import android.animation.AnimatorSet
-import android.animation.ValueAnimator
+import android.animation.ObjectAnimator
 import android.content.Context
-import android.widget.RemoteViews
-import android.widget.RemoteViews.RemoteView
+import android.view.View
 import androidx.core.animation.doOnEnd
-import com.codinlog.presentation.R
+import com.codinlog.presentation.databinding.LayoutAnimScreenBinding
+import com.codinlog.presentation.screen.core.BaseScreenContainer
+import com.codinlog.presentation.screen.core.PresentationScreen
 
 /**
  * @description TODO
@@ -14,49 +15,45 @@ import com.codinlog.presentation.R
  * @author kouqurong / codinlog@foxmail.com
  * @date 2022/11/10
  */
-typealias OnViewUpdateListener = (view: RemoteViews) -> Unit
 
-@RemoteView
-class AnimScreen(context: Context) : RemoteViews(context.packageName, R.layout.layout_anim_screen) {
-    private var mOnViewUpdateListener: OnViewUpdateListener? = null
 
-    private val mAnimSet = AnimatorSet().apply {
-        val nearAnim = ValueAnimator.ofFloat(-140F, -10F).apply {
-            duration = 1000
-            addUpdateListener {
-                val value = it.animatedValue as Float
-                setFloat(R.id.tap_card, "setTranslationY", value)
+class AnimScreen(context: Context, parent: BaseScreenContainer) :
+    PresentationScreen(context, parent) {
+    private lateinit var mBinding: LayoutAnimScreenBinding
 
-                mOnViewUpdateListener?.invoke(this@AnimScreen)
-            }
+    private lateinit var mAnimatorSet: AnimatorSet
+
+    override fun onCreateView(parent: BaseScreenContainer): View {
+        mBinding = LayoutAnimScreenBinding.inflate(layoutInflater, parent, false)
+
+        mAnimatorSet = AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(mBinding.ivAnim, "translationY", -140f, -10f),
+                ObjectAnimator.ofFloat(mBinding.ivAnim, "translationY", -10f, -140f)
+            )
         }
 
-        val leaveAnim = nearAnim.clone().apply {
-            reverse()
-            addUpdateListener {
-                val value = it.animatedValue as Float
-                setFloat(R.id.tap_card, "setTranslationY", value)
-                mOnViewUpdateListener?.invoke(this@AnimScreen)
-            }
-        }
-
-        playSequentially(nearAnim, leaveAnim)
+        return mBinding.root
     }
 
-    fun setOnViewUpdateListener(onViewUpdateListener: OnViewUpdateListener) {
-        mOnViewUpdateListener = onViewUpdateListener
-    }
+    override fun onViewCreated() {
+        super.onViewCreated()
 
-    fun startAnim() {
-        mAnimSet.start()
-
-        mAnimSet.doOnEnd {
-            mAnimSet.start()
+        mAnimatorSet.doOnEnd {
+            mAnimatorSet.start()
         }
     }
 
-    fun stopAnim() {
-        mAnimSet.cancel()
+    override fun onVisible() {
+        super.onVisible()
+
+        mAnimatorSet.start()
+    }
+
+    override fun onInvisible() {
+        super.onInvisible()
+
+        mAnimatorSet.cancel()
     }
 
 }

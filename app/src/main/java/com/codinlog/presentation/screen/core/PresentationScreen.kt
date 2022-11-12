@@ -1,4 +1,4 @@
-package com.codinlog.presentation.screen
+package com.codinlog.presentation.screen.core
 
 import android.content.Context
 import android.view.View
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
  * @author kouqurong / codinlog@foxmail.com
  * @date 2022/11/9
  */
-abstract class PresentationScreen(context: Context, private val parent: BaseScreenContainer) :
+abstract class PresentationScreen(context: Context,val parent: BaseScreenContainer) :
     BaseScreenContainer(context) {
 
     init {
@@ -25,7 +25,7 @@ abstract class PresentationScreen(context: Context, private val parent: BaseScre
 
     abstract fun onCreateView(parent: BaseScreenContainer): View
 
-    open fun onViewCreated(){}
+    open fun onViewCreated() {}
 
     private fun setContentView(view: View?) {
         if (view == null) return

@@ -1,8 +1,7 @@
-package com.codinlog.presentation.screen
+package com.codinlog.presentation.screen.core
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import com.codinlog.presentation.core.IVisibleStateChangedListener
 
@@ -14,6 +13,7 @@ import com.codinlog.presentation.core.IVisibleStateChangedListener
  */
 abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
     IVisibleStateChangedListener {
+
     val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     init {
