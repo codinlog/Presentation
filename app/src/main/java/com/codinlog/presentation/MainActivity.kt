@@ -50,6 +50,11 @@ class MainActivity : ComponentActivity() {
         mAppViewModel =
             ViewModelProvider(this, ApplicationViewModelFactory())[ApplicationViewModel::class.java]
 
+        val permission = checkSelfPermission(android.Manifest.permission.CAMERA)
+        if (permission != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.CAMERA), 1)
+        }
+
         val data = buildList {
             add(HomeData("Start Service", fun() {
                 startService(mServiceIntent)
@@ -77,6 +82,9 @@ class MainActivity : ComponentActivity() {
             }))
             add(HomeData("Second", fun() {
                 mAppViewModel.setPresentationScreenState(PresentationScreenRoute.SecondScreen)
+            }))
+            add(HomeData("Camera", fun() {
+                mAppViewModel.setPresentationScreenState(PresentationScreenRoute.CameraScreen)
             }))
             add(HomeData("Keyboard", fun() {
                 startActivity(Intent(this@MainActivity, KeyboardActivity::class.java))

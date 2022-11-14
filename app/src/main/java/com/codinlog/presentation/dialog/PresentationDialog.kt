@@ -11,6 +11,7 @@ import com.codinlog.presentation.PresentationScreenRoute
 import com.codinlog.presentation.dialog.core.BasePresentationDialog
 import com.codinlog.presentation.dialog.core.collectionOnVisible
 import com.codinlog.presentation.screen.AnimScreen
+import com.codinlog.presentation.screen.CameraScreen
 import com.codinlog.presentation.screen.FirstScreen
 import com.codinlog.presentation.screen.SecondScreen
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -56,6 +57,11 @@ class PresentationDialog(context: Context, display: Display) :
             is PresentationScreenRoute.AnimScreen -> {
                 setContentView(AnimScreen(context, container))
             }
+
+            is PresentationScreenRoute.CameraScreen -> {
+                setContentView(CameraScreen(context, container))
+            }
+
             is PresentationScreenRoute.RemoteScreen -> {
                 setRemoteViews(state.view)
             }
