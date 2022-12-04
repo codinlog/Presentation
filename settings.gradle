@@ -14,3 +14,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Presentation"
 include ':app'
+include ':app:presentation'
+include ':app:presentation-kts'

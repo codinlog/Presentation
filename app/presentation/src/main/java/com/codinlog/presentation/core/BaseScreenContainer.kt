@@ -1,9 +1,11 @@
-package com.codinlog.presentation.screen.core
+package com.codinlog.presentation.core
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.codinlog.presentation.core.IVisibleStateChangedListener
+import com.codinlog.presentation.core.IPresentationLifecycleCallback
 
 /**
  * @description 我们简单认为客屏显示view声明周期只有visible和invisible两种状态
@@ -12,8 +14,7 @@ import com.codinlog.presentation.core.IVisibleStateChangedListener
  * @date 2022/11/9
  */
 abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
-    IVisibleStateChangedListener {
-
+    IPresentationLifecycleCallback {
     val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
     init {
@@ -22,12 +23,30 @@ abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        onVisible()
+        visible()
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
+        invisible()
+    }
+
+    internal fun visible() {
+        onVisible()
+        getChildAt(0)?.let {
+            if (it is BaseScreenContainer) {
+                it.visible()
+            }
+        }
+    }
+
+    internal fun invisible() {
         onInvisible()
+        getChildAt(0)?.let {
+            if (it is BaseScreenContainer) {
+                it.visible()
+            }
+        }
     }
 
     override fun onVisible() {
@@ -38,5 +57,7 @@ abstract class BaseScreenContainer(context: Context) : FrameLayout(context),
 
     }
 
-
+    override fun addView(child: View?) {
+        super.addView(child)
+    }
 }

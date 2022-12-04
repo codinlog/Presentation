@@ -9,8 +9,9 @@ import com.codinlog.presentation.ApplicationViewModel
 import com.codinlog.presentation.ApplicationViewModelFactory
 import com.codinlog.presentation.PresentationScreenRoute
 import com.codinlog.presentation.databinding.LayoutSecondScreenBinding
-import com.codinlog.presentation.screen.core.BaseScreenContainer
+import com.codinlog.presentation.core.BaseScreenContainer
 import com.codinlog.presentation.screen.core.PresentationKeyboardScreen
+import com.codinlog.presentation.screen.core.viewModelStoreOwner
 
 /**
  * @description TODO
@@ -29,9 +30,6 @@ class SecondScreen(context: Context, parent: BaseScreenContainer) :
 
     override fun onCreateView(parent: BaseScreenContainer): View {
         mBinding = LayoutSecondScreenBinding.inflate(layoutInflater, parent, false)
-
-        val viewModelStoreOwner = parent.findViewTreeViewModelStoreOwner()
-            ?: throw IllegalStateException("viewModelStoreOwner is null")
 
         mViewModel = ViewModelProvider(
             viewModelStoreOwner,

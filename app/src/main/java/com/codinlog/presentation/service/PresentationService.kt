@@ -72,11 +72,11 @@ class PresentationService : Service(), LifecycleOwner, ViewModelStoreOwner {
 
     inner class RemoteViewBinder : IPresentationAidlInterface.Stub() {
         override fun setRemoteView(remoteViews: RemoteViews) {
-            mAppViewModel.setPresentationScreenState(
-                PresentationScreenRoute.RemoteScreen(
-                    remoteViews
-                )
-            )
+//            mAppViewModel.setPresentationScreenState(
+//                PresentationScreenRoute.RemoteScreen(
+//                    remoteViews
+//                )
+//            )
         }
 
     }

@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.codinlog.presentation.ApplicationViewModel
 import com.codinlog.presentation.ApplicationViewModelFactory
 import com.codinlog.presentation.PresentationScreenRoute
 import com.codinlog.presentation.databinding.LayoutFirstScreenBinding
-import com.codinlog.presentation.screen.core.BaseScreenContainer
-import com.codinlog.presentation.screen.core.PresentationScreen
+import com.codinlog.presentation.core.BaseScreenContainer
+import com.codinlog.presentation.core.BasePresentationScreen
+import com.codinlog.presentation.screen.core.viewModelStoreOwner
 
 /**
  * @description TODO
@@ -25,15 +25,12 @@ private const val TAG = "FirstScreen"
 
 @SuppressLint("ViewConstructor")
 class FirstScreen(context: Context, parent: BaseScreenContainer) :
-    PresentationScreen(context, parent) {
+    BasePresentationScreen(context, parent) {
     lateinit var mBinding: LayoutFirstScreenBinding
     lateinit var mViewModel: ApplicationViewModel
 
     override fun onCreateView(parent: BaseScreenContainer): View {
         mBinding = LayoutFirstScreenBinding.inflate(layoutInflater, parent, false)
-
-        val viewModelStoreOwner = parent.findViewTreeViewModelStoreOwner()
-            ?: throw IllegalStateException("viewModelStoreOwner is null")
 
         mViewModel = ViewModelProvider(
             viewModelStoreOwner,

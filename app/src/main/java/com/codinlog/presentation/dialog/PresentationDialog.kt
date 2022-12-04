@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Display
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.codinlog.presentation.ApplicationViewModel
 import com.codinlog.presentation.ApplicationViewModelFactory
 import com.codinlog.presentation.PresentationScreenRoute
-import com.codinlog.presentation.dialog.core.BasePresentationDialog
-import com.codinlog.presentation.dialog.core.collectionOnVisible
+import com.codinlog.presentation.core.ApplicationViewModelStoreProvider
+import com.codinlog.presentation.core.BasePresentationDialog
+import com.codinlog.presentation.core.collectionOnVisible
 import com.codinlog.presentation.screen.AnimScreen
 import com.codinlog.presentation.screen.FirstScreen
 import com.codinlog.presentation.screen.SecondScreen
@@ -24,7 +27,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 private const val TAG = "PresentationDialog"
 
 class PresentationDialog(context: Context, display: Display) :
-    BasePresentationDialog(context, display) {
+    BasePresentationDialog(context, display), ViewModelStoreOwner {
 
     private lateinit var mAppViewModel: ApplicationViewModel
 
@@ -38,8 +41,8 @@ class PresentationDialog(context: Context, display: Display) :
             mAppViewModel.presentationScreenFlow
                 .distinctUntilChanged()
                 .collect {
-                showPresentationScreen(it)
-            }
+                    showPresentationScreen(it)
+                }
         }
     }
 
@@ -56,10 +59,9 @@ class PresentationDialog(context: Context, display: Display) :
             is PresentationScreenRoute.AnimScreen -> {
                 setContentView(AnimScreen(context, container))
             }
-            is PresentationScreenRoute.RemoteScreen -> {
-                setRemoteViews(state.view)
-            }
         }
     }
+
+    override fun getViewModelStore(): ViewModelStore = ApplicationViewModelStoreProvider
 
 }

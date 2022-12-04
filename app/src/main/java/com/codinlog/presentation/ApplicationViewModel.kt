@@ -22,7 +22,6 @@ sealed interface PresentationScreenRoute {
     object FirstScreen : PresentationScreenRoute
     object SecondScreen : PresentationScreenRoute
     object AnimScreen : PresentationScreenRoute
-    class RemoteScreen(val view: RemoteViews) : PresentationScreenRoute
 }
 
 sealed interface PresentationDialogState {

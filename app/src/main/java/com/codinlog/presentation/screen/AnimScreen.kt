@@ -6,8 +6,8 @@ import android.content.Context
 import android.view.View
 import androidx.core.animation.doOnEnd
 import com.codinlog.presentation.databinding.LayoutAnimScreenBinding
-import com.codinlog.presentation.screen.core.BaseScreenContainer
-import com.codinlog.presentation.screen.core.PresentationScreen
+import com.codinlog.presentation.core.BaseScreenContainer
+import com.codinlog.presentation.core.BasePresentationScreen
 
 /**
  * @description TODO
@@ -18,7 +18,7 @@ import com.codinlog.presentation.screen.core.PresentationScreen
 
 
 class AnimScreen(context: Context, parent: BaseScreenContainer) :
-    PresentationScreen(context, parent) {
+    BasePresentationScreen(context, parent) {
     private lateinit var mBinding: LayoutAnimScreenBinding
 
     private lateinit var mAnimatorSet: AnimatorSet

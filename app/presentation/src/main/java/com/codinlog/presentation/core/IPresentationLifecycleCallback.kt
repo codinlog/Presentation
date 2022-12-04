@@ -6,7 +6,7 @@ package com.codinlog.presentation.core
  * @author kouqurong / codinlog@foxmail.com
  * @date 2022/11/9
  */
-interface IVisibleStateChangedListener {
+interface IPresentationLifecycleCallback {
 
     fun onVisible()
 
