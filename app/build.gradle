@@ -51,6 +51,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+
     // CameraX core library using the camera2 implementation
     def camerax_version = "1.2.0-beta02"
     // The following line is optional, as the core library is included indirectly by camera-camera2
@@ -66,6 +68,9 @@ dependencies {
     implementation "androidx.camera:camera-mlkit-vision:${camerax_version}"
     // If you want to additionally use the CameraX Extensions library
     implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+    implementation(project(":app:presentation"))
+    implementation(project(":app:presentation-kts"))
 
     implementation "com.google.dagger:hilt-android:2.44"
     implementation 'androidx.lifecycle:lifecycle-service:2.5.1'

@@ -9,6 +9,8 @@ import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.MotionEvent
 import android.widget.EditText
 import androidx.annotation.UiThread
+import com.codinlog.presentation.core.BasePresentationScreen
+import com.codinlog.presentation.core.BaseScreenContainer
 import com.codinlog.presentation.databinding.LayoutPresentationKeyboardBinding
 
 /**
@@ -21,7 +23,7 @@ import com.codinlog.presentation.databinding.LayoutPresentationKeyboardBinding
 private const val TAG = "PresentationKeyboardScreen"
 
 abstract class PresentationKeyboardScreen(context: Context, parent: BaseScreenContainer) :
-    PresentationScreen(context, parent), KeyboardView.OnKeyboardActionListener {
+    BasePresentationScreen(context, parent), KeyboardView.OnKeyboardActionListener {
 
     private lateinit var mKeyboardBinding: LayoutPresentationKeyboardBinding
 

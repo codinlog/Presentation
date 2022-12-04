@@ -9,10 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.codinlog.presentation.core.BasePresentationScreen
+import com.codinlog.presentation.core.BaseScreenContainer
 import com.codinlog.presentation.databinding.LayoutCameraScreenBinding
-import com.codinlog.presentation.screen.core.BaseScreenContainer
-import com.codinlog.presentation.screen.core.PresentationScreen
-import com.google.common.util.concurrent.ListenableFuture
 
 /**
  * @description TODO
@@ -21,11 +20,11 @@ import com.google.common.util.concurrent.ListenableFuture
  * @date 2022/11/14
  */
 class CameraScreen(context: Context, parent: BaseScreenContainer) :
-    PresentationScreen(context, parent), LifecycleOwner {
+    BasePresentationScreen(context, parent), LifecycleOwner {
 
     private val mLifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
-    private lateinit var mCameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var mCameraProviderFuture: com.google.common.util.concurrent.ListenableFuture<ProcessCameraProvider>
 
     init {
         mLifecycleRegistry.currentState = Lifecycle.State.CREATED

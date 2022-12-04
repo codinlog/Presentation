@@ -22,6 +22,7 @@ sealed interface PresentationScreenRoute {
     object FirstScreen : PresentationScreenRoute
     object SecondScreen : PresentationScreenRoute
     object AnimScreen : PresentationScreenRoute
+    object CameraScreen:PresentationScreenRoute
 }
 
 sealed interface PresentationDialogState {
