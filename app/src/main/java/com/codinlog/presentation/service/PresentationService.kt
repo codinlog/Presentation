@@ -25,7 +25,7 @@ class PresentationService : Service(), LifecycleOwner, ViewModelStoreOwner {
     private val mBinder = RemoteViewBinder()
 
     @Inject
-    lateinit var mPresentationDialog: PresentationDialog
+    lateinit var presentationDialog: PresentationDialog
 
     private lateinit var mAppViewModel: ApplicationViewModel
 
@@ -40,11 +40,11 @@ class PresentationService : Service(), LifecycleOwner, ViewModelStoreOwner {
             mAppViewModel.presentationDialogStateFlow.collectLatest {
                 when (it) {
                     ServiceShowState -> {
-                        mPresentationDialog.show()
+                        presentationDialog.show()
                     }
 
                     ServiceHideState -> {
-                        mPresentationDialog.dismiss()
+                        presentationDialog.dismiss()
                     }
                 }
             }

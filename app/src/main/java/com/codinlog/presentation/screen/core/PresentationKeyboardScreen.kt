@@ -3,12 +3,12 @@ package com.codinlog.presentation.screen.core
 import android.content.Context
 import android.inputmethodservice.KeyboardView
 import android.text.InputType
-import android.view.Gravity
+import android.util.Log
+import android.view.Gravity.BOTTOM
+import android.view.Gravity.CENTER_HORIZONTAL
 import android.view.MotionEvent
 import android.widget.EditText
 import androidx.annotation.UiThread
-import com.codinlog.presentation.core.BaseScreenContainer
-import com.codinlog.presentation.core.BasePresentationScreen
 import com.codinlog.presentation.databinding.LayoutPresentationKeyboardBinding
 
 /**
@@ -18,8 +18,10 @@ import com.codinlog.presentation.databinding.LayoutPresentationKeyboardBinding
  * @date 2022/11/12
  */
 
+private const val TAG = "PresentationKeyboardScreen"
+
 abstract class PresentationKeyboardScreen(context: Context, parent: BaseScreenContainer) :
-    BasePresentationScreen(context, parent), KeyboardView.OnKeyboardActionListener {
+    PresentationScreen(context, parent), KeyboardView.OnKeyboardActionListener {
 
     private lateinit var mKeyboardBinding: LayoutPresentationKeyboardBinding
 
@@ -29,17 +31,19 @@ abstract class PresentationKeyboardScreen(context: Context, parent: BaseScreenCo
 
     var cancelTouchedOutsideKeyboard = true
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
-        if (mAreKeyboardDisplayed) {
-            val outside = areTouchedKeyboardOutside(event)
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
+        Log.d(TAG, "dispatchTouchEvent Event")
+        if (ev.actionMasked == MotionEvent.ACTION_DOWN && mAreKeyboardDisplayed) {
+            val outside = areTouchedKeyboardOutside(ev)
+
+            Log.d(TAG, "on Touch Event: outside = $outside")
 
             if (outside) {
                 if (cancelTouchedOutsideKeyboard) hideKeyboard()
                 return true
             }
         }
-
-        return super.onTouchEvent(event)
+        return super.dispatchTouchEvent(ev)
     }
 
     @UiThread
@@ -106,7 +110,7 @@ abstract class PresentationKeyboardScreen(context: Context, parent: BaseScreenCo
             LayoutParams.MATCH_PARENT,
             LayoutParams.WRAP_CONTENT
         ).apply {
-            gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            gravity = BOTTOM or CENTER_HORIZONTAL
         }
 
         mKeyboardBinding.kvKeyboard.setOnKeyboardActionListener(this)
